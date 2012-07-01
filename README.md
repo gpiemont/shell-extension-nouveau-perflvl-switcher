@@ -24,3 +24,6 @@ Thanks goes to Francisco Pina Martins (https://github.com/StuntsPT) the author o
 (https://github.com/StuntsPT/shell-extension-radeon-power-profile-manager, that I used as a starting point for the code),
 to Wikipedia, where I took the raster svg from (http://en.wikipedia.org/wiki/File:Phoenician_nun.svg)
 and of course to the #nouveau team on freenode, for the funny conversations and suggestions.
+
+##License:
+This software is licensed under the GPLv2.
