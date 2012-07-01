@@ -1,25 +1,22 @@
 // Extension developed by Giulio Piemontese (piemontese.giulio@gmail.com)
 // https://github.com/gpiemont
+// Copyright 2012 Giulio Piemontese
+// Licence: GPLv2
+
 
 // Largely Based on Radeon Power Profile Manager
- 
 // (Francisco Pina Martins https://github.com/StuntsPT )
 //
-// Licence: GPLv2
-//
-// Copyright 2012 Francisco Pina Martins
 
 //
-
+// This file is part of Nouveau Perflvl Switcher
 //
-// This file is part of Radeon Power Profile Manager.
-//
-// Radeon Power Profile Manager is free software: you can redistribute it and/or modify
+// This file is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 2 of the License, or
 // (at your option) any later version.
 
-// Radeon Power Profile Manager is distributed in the hope that it will be useful,
+// This file is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
