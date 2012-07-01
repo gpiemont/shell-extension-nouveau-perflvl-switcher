@@ -7,7 +7,7 @@ Nouveau Perflvl Switcher is a small extension to switch among performance levels
 
 It works when the card is primary or secondary, but not in SLI/Multicard configuration, as Nouveau 
 doesn't support multicard setup (see http://nouveau.freedesktop.org/wiki/FeatureMatrix). 
-Yet, nvidia optimus has to be tested so feedbacks of any type are higly requested.
+Yet, nvidia optimus has to be tested with, so feedbacks of any type are kindly requested.
 
 ##Requirements
 In order to enable performance levels switchin in your kernel, you have to boot it with nouveau.perflvl_wr=7777 .
