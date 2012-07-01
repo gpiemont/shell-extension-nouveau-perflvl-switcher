@@ -14,6 +14,10 @@ In order to enable performance levels switchin in your kernel, you have to boot 
 This extensions uses policykit to gain root write access to the sysfs file (/sys/class/drm/cardX/performance_level), so 
 there's no need to change write permission on the file (perhaps a full root authentication would be better).
 
+##Debug
+Extension messages and debug informations can be found in ~/.xsession-errors. Just look for the lines starting 
+with "[nouveau pm switch]".
+
 ##Disclaimer
 Remember that card reclocking is NOT YET considered stable, so use performance level switching AT YOUR OWN RISK.
 This extension has been tested on a NV50 generation card (GeForce 9650mGT), and it should work flawlessly on newer cards,
