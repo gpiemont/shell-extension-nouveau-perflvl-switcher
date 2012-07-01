@@ -15,8 +15,7 @@ This extensions uses policykit to gain root write access to the sysfs file (/sys
 there's no need to change write permission on the file (perhaps a full root authentication would be better).
 
 ##Debug
-Extension messages and debug informations can be found in ~/.xsession-errors. Just look for the lines starting 
-with "[nouveau pm switch]".
+Extension messages and debug informations can be found in ~/.xsession-errors. Just look for lines starting with "[nouveau pm switch]".
 
 ##Disclaimer
 Remember that card reclocking is NOT YET considered stable, so use performance level switching AT YOUR OWN RISK.
