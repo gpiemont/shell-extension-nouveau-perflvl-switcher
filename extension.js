@@ -49,20 +49,22 @@ function ProfileManager(metadata)
 
     this.file = [] ;
     this.file[0] = "/sys/class/drm/card0/device/performance_level";
-    this.file[1] = "/sys/class/drm/card1/device/performance_level"
+    this.file[1] = "/sys/class/drm/card1/device/performance_level";
     this.second_card = this.file[1];
 
     // Paths to sysfs dirs 
 
     this.path = [] ;
-    this.path[0] = "/sys/class/drm/card0/device/"
-    this.path[1] = "/sys/class/drm/card1/device/"
+    this.path[0] = "/sys/class/drm/card0/device/";
+    this.path[1] = "/sys/class/drm/card1/device/";
 
     this.perflvls = AvailPerflvls(this.path[0]);
     
     nv_log("Available Performance Levels : " + this.perflvls);
 
-    if ( this.perflvls == 0 ) {
+    if ( this.perflvls == 0 ) 
+    {
+    	nv_log("No performance levels are available on this card. maybe not using nouveau?")
 	return 0;
     }
 
@@ -121,10 +123,10 @@ ProfileManager.prototype =
 	    // Clear
 	    tasksMenu.removeAll();
 
-	    if (cardno = CheckForNVFile(this.file[0]))
+	    if (CheckForNVFile(this.file[0]))
 	    {
 		varFile = this.file[0];
-	    } else if (cardno = CheckForNVFile(this.second_card)) {
+	    } else if (CheckForNVFile(this.second_card)) {
 	    	varFile = this.second_card;
 	    } 
 
@@ -141,7 +143,7 @@ ProfileManager.prototype =
 		temp.add_actor(this.Icon,1);
 
 	    	// Performance level switch section
-	    	let plswitchSection = new PopupMenu.PopupMenuSection();
+	    	let switchSection = new PopupMenu.PopupMenuSection();
 
 	    	//Create power profile changing buttons:
 	   	this.powerbutton = [];
@@ -200,18 +202,16 @@ function changePerflvl(n,file)
 {
     if (CheckForNVFile(file))
     {
-
 	nv_log("Setting new perflvl: " + n);
 	
 	let [success, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
 	GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, null, null);
-    
     }
 }
 
 
 // Checks if we're actually dealing with a nouveau card.
-// Probably unneeded but it tell us the card number, so let's keep it for future purposes 
+// Probably unneeded, but it tell us the card number so let's keep it for future purposes 
  
 function CheckForNVFile(filename)
 {
