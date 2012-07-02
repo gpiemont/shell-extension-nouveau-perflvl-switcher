@@ -200,22 +200,12 @@ function changePerflvl(n,file)
 {
     if (CheckForNVFile(file))
     {
-//	Old setting method, needed "fixed" permissions on file
-//	let f = Gio.file_new_for_path(file);
-//	let raw = f.replace(null, false, Gio.FileCreateFlags.NONE, null);
-//      Shell.write_string_to_stream (raw, n + "\n" );
 
 	nv_log("Setting new perflvl: " + n);
 	
-	let [success, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));
-	[success, pid ] = GLib.spawn_async_with_pipes(null, argv, null, 
-					GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, null, null);
-
-	if ( success && pid != 0) {
-        	GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function(pid,status) {
-                                                      GLib.spawn_close_pid(pid); }, null);
-	}
-
+	let [success, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
+	GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, null, null);
+    
     }
 }
 
