@@ -111,7 +111,6 @@ ProfileManager.prototype =
 	_refresh: function()
 	{
 	    let varFile = 0; 
-	    let cardno = 0;
 
 	    let temp = this.temp;
  
@@ -146,7 +145,7 @@ ProfileManager.prototype =
 	    	let switchSection = new PopupMenu.PopupMenuSection();
 
 	    	//Create power profile changing buttons:
-	   	this.powerbutton = [];
+	   	this.switchSection.powerbutton = [];
 	   
             	for ( let pl = 0; pl < this.perflvls ; pl++) 
 		{
@@ -169,7 +168,7 @@ ProfileManager.prototype =
                        		changePerflvl(p,varFile);
                 	}); 
 
-			this.powerbutton[pl] = item ;
+			this.switchSection.powerbutton[pl] = item ;
 			tasksMenu.addMenuItem(item);
 	    	}
 
