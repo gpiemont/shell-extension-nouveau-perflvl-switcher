@@ -98,6 +98,7 @@ ProfileManager.prototype =
 	    this.actor.has_tooltip = true;
 
             this.perflvl = [];
+            this.currplvl = 0;
             
 	    for ( let pl = 0; pl < this.perflvls ; pl++) {
                 this.perflvl[pl] = _(this.path[0] + 'performance_level_' + pl) ;
@@ -111,13 +112,8 @@ ProfileManager.prototype =
 	_refresh: function()
 	{
 	    let varFile = 0; 
-
-	    let temp = this.temp;
- 
 	    let tasksMenu = this.menu;
 	    let temp = this.temp;
-
-	    let Icon = 0;
 
 	    // Clear
 	    tasksMenu.removeAll();
@@ -134,10 +130,10 @@ ProfileManager.prototype =
 	    {
 		let content = Shell.get_file_contents_utf8_sync(varFile).split("\n");
 		let profile = content[0].substring(content[0].indexOf(',') + 1);
-		this.curplvl = profile.trim() ;
+		this.currplvl = profile.trim() ;
 		
 		// No icon update for now
-		//Icon = this.Icon[this.curplvl];
+		//Icon = this.Icon[this.currplvl];
 
 		temp.add_actor(this.Icon,1);
 
@@ -158,7 +154,7 @@ ProfileManager.prototype =
 			item = new PopupMenu.PopupMenuItem(_(entryname));
 					
 			let p = pl;
-			if ( p == this.curplvl)
+			if ( p == this.currplvl)
 				item.setShowDot(true);
 
 	    		//Give the buttons an action:
@@ -204,7 +200,8 @@ function changePerflvl(n,file)
 	nv_log("Setting new perflvl: " + n);
 	
 	let [success, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
-	GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, null, null);
+	GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, 
+					null, null);
     }
 }
 
