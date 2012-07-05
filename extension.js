@@ -130,44 +130,44 @@ ProfileManager.prototype =
 	    // Sync
 	    if (varFile)
 	    {
-		    let content = Shell.get_file_contents_utf8_sync(varFile).split("\n");
-		    let profile = content[0].substring(content[0].indexOf(',') + 1);
-		    this.currplvl = profile.trim() ;
+		let content = Shell.get_file_contents_utf8_sync(varFile).split("\n");
+		let profile = content[0].substring(content[0].indexOf(',') + 1);
+		this.currplvl = profile.trim() ;
 		
-		    // No icon update for now
-		    //Icon = this.Icon[this.currplvl];
+		// No icon update for now
+		//Icon = this.Icon[this.currplvl];
 
-		    temp.add_actor(this.Icon,1);
+		temp.add_actor(this.Icon,1);
 
 	        // Performance level switch section
-	        this.switchSection = new PopupMenu.PopupMenuSection();
+		this.switchSection = new PopupMenu.PopupMenuSection();
 
 	        //Create power profile changing buttons:
-	   	    this.switchSection.powerbutton = [];
+	   	this.switchSection.powerbutton = [];
 	   
-            for ( let pl = 0; pl < this.perflvls ; pl++) 
-		    {
-			    let entryname = "Performance Level " + pl ;
+            	for ( let pl = 0; pl < this.perflvls ; pl++) 
+		{
+			let entryname = "Performance Level " + pl ;
 
-			    // Usually, the boot performance entry level
-			    if ( pl == 1 )
-				    entryname = entryname + " (boot)"
+			// Usually, the boot performance entry level
+			if ( pl == 1 )
+				entryname = entryname + " (boot)"
 
-			    let item = new PopupMenu.PopupMenuItem(_(entryname));
+			let item = new PopupMenu.PopupMenuItem(_(entryname));
 					
-			    let p = pl;
-			    if ( p == this.currplvl)
-				    item.setShowDot(true);
+			let p = pl;
+			if ( p == this.currplvl)
+				item.setShowDot(true);
 
-	    	    //Give the buttons an action:
-			    item.connect('activate', function()
-                {
+	    	    	//Give the buttons an action:
+			item.connect('activate', function()
+                	{
                    		//temp.remove_actor(Icon);
-                       	changePerflvl(p,varFile);
-                }); 
+                       		changePerflvl(p,varFile);
+                	}); 
 
-			    this.switchSection.powerbutton[pl] = item ;
-			    tasksMenu.addMenuItem(item);
+			this.switchSection.powerbutton[pl] = item ;
+			tasksMenu.addMenuItem(item);
 	    	}
 
 	   }	  
@@ -186,8 +186,8 @@ ProfileManager.prototype =
 
         disable: function()
         {
-	        Main.panel._rightBox.remove_child(this.actor); 
-            Main.panel._menus.removeMenu(this.menu);
+	    Main.panel._rightBox.remove_child(this.actor); 
+            //Main.panel._menus.removeMenu(this.menu);
             this.monitor.cancel();
         }
 
