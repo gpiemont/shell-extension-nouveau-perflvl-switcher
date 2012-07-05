@@ -66,7 +66,7 @@ function ProfileManager(metadata)
 	this.cardno = 1;
     }
 
-    nv_log("Available Performance Levels : " + this.perflvls) ;
+    nv_log( this.perflvls + " available Performance Levels : ") ;
 
     if ( this.perflvls == 0 ) 
     { 
@@ -89,7 +89,7 @@ function ProfileManager(metadata)
 // Prototype
 ProfileManager.prototype =
 {
-	__proto__: PanelMenu.Button.prototype,
+	__proto__: PanelMenu.SystemStatusButton.prototype,
 
     	_init: function()
     	{
@@ -172,25 +172,24 @@ ProfileManager.prototype =
 	   }	  
 	},
 
-	enable: function()
-	{
-	    Main.panel._rightBox.insert_child_at_index(this.actor, 0);
-	    Main.panel._menus.addMenu(this.menu);
+        enable: function()
+        {
+            Main.panel._rightBox.insert_child_at_index(this.actor, 0);
+            Main.panel._menus.addMenu(this.menu);
 
-	    // Refresh menu
-	    let fileM = Gio.file_new_for_path(this.file[0]);
-	    this.monitor = fileM.monitor(Gio.FileMonitorFlags.NONE, null);
-	    this.monitor.connect('changed', Lang.bind(this, this._refresh));
-	},
+            // Refresh menu
+            let fileM = Gio.file_new_for_path(this.file[this.cardno]);
+            this.monitor = fileM.monitor(Gio.FileMonitorFlags.NONE, null);
+            this.monitor.connect('changed', Lang.bind(this, this._refresh));
+        },
 
-	disable: function()
-	{
-	    Main.panel._menus.removeMenu(this.menu);
-	    Main.panel._rightBox.remove_actor(this.actor);
-	    this.actor.remove_actor(this.temp);
-	    this.temp.remove_actor(this.Icon);
-	    this.monitor.cancel();
-	}
+        disable: function()
+        {
+	    Main.panel._rightBox.remove_child(this.actor); 
+            Main.panel._menus.removeMenu(this.menu);
+            this.monitor.cancel();
+        }
+
 }
 
 
@@ -200,7 +199,7 @@ function changePerflvl(n,file)
 {
     if (CheckForNVFile(file))
     {
-	nv_log("Setting new perflvl: " + n);
+	nv_log("Switching to performance level: " + n);
 	
 	let [success, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
 	GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, 
@@ -244,7 +243,7 @@ function AvailPerflvls(path)
 
 	return p;
 }
- 
+
 // Init function
 function init(metadata)
 {
