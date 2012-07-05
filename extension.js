@@ -33,8 +33,7 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Shell = imports.gi.Shell;
 const Util = imports.misc.util;
-
-const Clutter = imports.gi.Clutter
+const Clutter = imports.gi.Clutter;
 
 function nv_log(message)
 {
@@ -48,23 +47,30 @@ function ProfileManager(metadata)
     // Main sysfs files (card 0,1)
 
     this.file = [] ;
-    this.file[0] = "/sys/class/drm/card0/device/performance_level";
-    this.file[1] = "/sys/class/drm/card1/device/performance_level";
-    this.second_card = this.file[1];
+    this.file[0] = "/sys/class/drm/card0/device/performance_level" ;
+    this.file[1] = "/sys/class/drm/card1/device/performance_level" ;
+    this.second_card = this.file[1] ;
 
     // Paths to sysfs dirs 
 
     this.path = [] ;
-    this.path[0] = "/sys/class/drm/card0/device/";
-    this.path[1] = "/sys/class/drm/card1/device/";
+    this.path[0] = "/sys/class/drm/card0/device/" ;
+    this.path[1] = "/sys/class/drm/card1/device/" ;
 
-    this.perflvls = AvailPerflvls(this.path[0]);
-    
-    nv_log("Available Performance Levels : " + this.perflvls);
+
+    if (CheckForNVFile(this.file[0])) {
+    	this.perflvls = AvailPerflvls(this.path[0]); 
+	this.cardno = 0;
+    } else if(this.perflvls == 0 && CheckForNVFile(this.second_card)) {
+	this.perflvls = AvailPerflvls(this.path[1]);
+	this.cardno = 1;
+    }
+
+    nv_log("Available Performance Levels : " + this.perflvls) ;
 
     if ( this.perflvls == 0 ) 
-    {
-    	nv_log("No performance levels are available on this card. maybe not using nouveau?")
+    { 
+    	nv_log("No performance levels are available on this card. Maybe not using nouveau?");
 	return 0;
     }
 
@@ -118,12 +124,7 @@ ProfileManager.prototype =
 	    // Clear
 	    tasksMenu.removeAll();
 
-	    if (CheckForNVFile(this.file[0]))
-	    {
-		varFile = this.file[0];
-	    } else if (CheckForNVFile(this.second_card)) {
-	    	varFile = this.second_card;
-	    } 
+	    varFile = this.file[this.cardno];
 
 	    // Sync
 	    if (varFile)
@@ -138,7 +139,7 @@ ProfileManager.prototype =
 		temp.add_actor(this.Icon,1);
 
 	    	// Performance level switch section
-	    	let switchSection = new PopupMenu.PopupMenuSection();
+	    	this.switchSection = new PopupMenu.PopupMenuSection();
 
 	    	//Create power profile changing buttons:
 	   	this.switchSection.powerbutton = [];
@@ -151,7 +152,7 @@ ProfileManager.prototype =
 			if ( pl == 1 )
 				entryname = entryname + " (boot)"
 
-			item = new PopupMenu.PopupMenuItem(_(entryname));
+			let item = new PopupMenu.PopupMenuItem(_(entryname));
 					
 			let p = pl;
 			if ( p == this.currplvl)
@@ -186,6 +187,8 @@ ProfileManager.prototype =
 	{
 	    Main.panel._menus.removeMenu(this.menu);
 	    Main.panel._rightBox.remove_actor(this.actor);
+	    this.actor.remove_actor(this.temp);
+	    this.temp.remove_actor(this.Icon);
 	    this.monitor.cancel();
 	}
 }
@@ -247,3 +250,4 @@ function init(metadata)
 {
 	return new ProfileManager(metadata);
 }
+
