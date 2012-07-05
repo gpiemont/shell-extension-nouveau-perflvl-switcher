@@ -57,6 +57,7 @@ function ProfileManager(metadata)
     this.path[0] = "/sys/class/drm/card0/device/" ;
     this.path[1] = "/sys/class/drm/card1/device/" ;
 
+    this.perflvls = 0;
 
     if (CheckForNVFile(this.file[0])) {
     	this.perflvls = AvailPerflvls(this.path[0]); 
@@ -71,7 +72,7 @@ function ProfileManager(metadata)
     if ( this.perflvls == 0 ) 
     { 
     	nv_log("No performance levels are available on this card. Maybe not using nouveau?");
-	return 0;
+	    return 0;
     }
 
     this.Icon = Clutter.Texture.new_from_file(_(metadata.path + "/nun.svg"));
@@ -129,44 +130,44 @@ ProfileManager.prototype =
 	    // Sync
 	    if (varFile)
 	    {
-		let content = Shell.get_file_contents_utf8_sync(varFile).split("\n");
-		let profile = content[0].substring(content[0].indexOf(',') + 1);
-		this.currplvl = profile.trim() ;
+		    let content = Shell.get_file_contents_utf8_sync(varFile).split("\n");
+		    let profile = content[0].substring(content[0].indexOf(',') + 1);
+		    this.currplvl = profile.trim() ;
 		
-		// No icon update for now
-		//Icon = this.Icon[this.currplvl];
+		    // No icon update for now
+		    //Icon = this.Icon[this.currplvl];
 
-		temp.add_actor(this.Icon,1);
+		    temp.add_actor(this.Icon,1);
 
-	    	// Performance level switch section
-	    	this.switchSection = new PopupMenu.PopupMenuSection();
+	        // Performance level switch section
+	        this.switchSection = new PopupMenu.PopupMenuSection();
 
-	    	//Create power profile changing buttons:
-	   	this.switchSection.powerbutton = [];
+	        //Create power profile changing buttons:
+	   	    this.switchSection.powerbutton = [];
 	   
-            	for ( let pl = 0; pl < this.perflvls ; pl++) 
-		{
-			let entryname = "Performance Level " + pl ;
+            for ( let pl = 0; pl < this.perflvls ; pl++) 
+		    {
+			    let entryname = "Performance Level " + pl ;
 
-			// Usually, the boot performance entry level
-			if ( pl == 1 )
-				entryname = entryname + " (boot)"
+			    // Usually, the boot performance entry level
+			    if ( pl == 1 )
+				    entryname = entryname + " (boot)"
 
-			let item = new PopupMenu.PopupMenuItem(_(entryname));
+			    let item = new PopupMenu.PopupMenuItem(_(entryname));
 					
-			let p = pl;
-			if ( p == this.currplvl)
-				item.setShowDot(true);
+			    let p = pl;
+			    if ( p == this.currplvl)
+				    item.setShowDot(true);
 
-	    		//Give the buttons an action:
-			item.connect('activate', function()
-                	{
-                       		//temp.remove_actor(Icon);
-                       		changePerflvl(p,varFile);
-                	}); 
+	    	    //Give the buttons an action:
+			    item.connect('activate', function()
+                {
+                   		//temp.remove_actor(Icon);
+                       	changePerflvl(p,varFile);
+                }); 
 
-			this.switchSection.powerbutton[pl] = item ;
-			tasksMenu.addMenuItem(item);
+			    this.switchSection.powerbutton[pl] = item ;
+			    tasksMenu.addMenuItem(item);
 	    	}
 
 	   }	  
@@ -185,7 +186,7 @@ ProfileManager.prototype =
 
         disable: function()
         {
-	    Main.panel._rightBox.remove_child(this.actor); 
+	        Main.panel._rightBox.remove_child(this.actor); 
             Main.panel._menus.removeMenu(this.menu);
             this.monitor.cancel();
         }
@@ -199,10 +200,10 @@ function changePerflvl(n,file)
 {
     if (CheckForNVFile(file))
     {
-	nv_log("Switching to performance level: " + n);
+	    nv_log("Switching to performance level: " + n);
 	
-	let [success, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
-	GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, 
+	    let [success, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
+	    GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, 
 					null, null);
     }
 }
@@ -215,12 +216,12 @@ function CheckForNVFile(filename)
 {
     if (GLib.file_test(filename, GLib.FileTest.EXISTS) && filename.indexOf("performance_level") != -1)
     {
-	if (filename.indexOf("/card1/") != -1 ) { 
-		nv_log("Working on secondary card");
-		return 2;
-	}
+	    if (filename.indexOf("/card1/") != -1 ) { 
+		    nv_log("Working on secondary card");
+		    return 2;
+	    }
 
-	return 1;
+	    return 1;
     }
 
     return 0;
