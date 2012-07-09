@@ -215,7 +215,8 @@ function changePerflvl(n,file)
 					null, null);
 	    if (ret != 0)
 	    	nv_err("Couldn't change perflvl as superuser : error = " + ret + " pid = " + pid);
-	    	
+	    
+	    return ret;
     }
 }
 
