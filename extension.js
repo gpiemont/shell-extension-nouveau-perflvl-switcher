@@ -41,6 +41,11 @@ function nv_log(message)
 	global.log("[nouveau pm switch] " + message + "\n");
 }
 
+function nv_err(message)
+{
+	global.logError("[nouveau pm switch] " + message + "\n");
+}
+
 // ProfileManager function
 function ProfileManager(metadata)
 {
@@ -71,7 +76,7 @@ function ProfileManager(metadata)
 
     if ( this.perflvls == 0 ) 
     { 
-    	nv_log("No performance levels are available on this card. Maybe not using nouveau?");
+    	nv_err("No performance levels are available on this card. Maybe not using nouveau?");
 	    return 0;
     }
 
@@ -227,6 +232,7 @@ function CheckForNVFile(filename)
 	    return 1;
     }
 
+    nv_err(filename + " is not a nouveau sysfs knob");
     return 0;
 }
 
