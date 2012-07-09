@@ -201,7 +201,10 @@ function changePerflvl(n,file)
     if (CheckForNVFile(file))
     {
 	    nv_log("Switching to performance level: " + n);
-	
+	    
+	    // Full command line (elevates privileges with polkit):
+	    // pkexec /bin/sh -c "/bin/echo n > /sys/class/drm/cardX/performance_level"
+	    
 	    let [success, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
 	    GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, 
 					null, null);
