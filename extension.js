@@ -205,13 +205,16 @@ function changePerflvl(n,file)
 {
     if (CheckForNVFile(file))
     {
+	    let pid;
+
 	    nv_log("Switching to performance level: " + n);
 	    
 	    // Full command line (elevates privileges with polkit):
 	    // pkexec /bin/sh -c "/bin/echo n > /sys/class/drm/cardX/performance_level"
 	    
 	    let [ret, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
-	    let [ret, pid, stdin, stdout, stderr ] = GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, 
+	    
+	    [ret, pid] = GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, 
 					null, null);
 	    if (ret != 0)
 	    	nv_err("Couldn't change perflvl as superuser : error = " + ret + " pid = " + pid);
