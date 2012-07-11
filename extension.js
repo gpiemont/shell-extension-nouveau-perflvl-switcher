@@ -64,10 +64,12 @@ function ProfileManager(metadata)
 
     this.perflvls = 0;
 
-    if (CheckForNVFile(this.file[0])) {
+    if (CheckForNVFile(this.file[0])) 
+    {
     	this.perflvls = AvailPerflvls(this.path[0]); 
 	this.cardno = 0;
-    } else if(this.perflvls == 0 && CheckForNVFile(this.second_card)) {
+    } else if(this.perflvls == 0 && CheckForNVFile(this.second_card)) 
+    {
 	this.perflvls = AvailPerflvls(this.path[1]);
 	this.cardno = 1;
     }
@@ -112,7 +114,8 @@ ProfileManager.prototype =
             this.perflvl = [];
             this.currplvl = 0;
             
-	    for ( let pl = 0; pl < this.perflvls ; pl++) {
+	    for ( let pl = 0; pl < this.perflvls ; pl++) 
+	    {
                 this.perflvl[pl] = _(this.path[0] + 'performance_level_' + pl) ;
 		nv_log(_("perflvl[" + pl + "]" + " : " + this.perflvl[pl]));
             }
@@ -231,7 +234,8 @@ function CheckForNVFile(filename)
 {
     if (GLib.file_test(filename, GLib.FileTest.EXISTS) && filename.indexOf("performance_level") != -1)
     {
-	    if (filename.indexOf("/card1/") != -1 ) { 
+	    if (filename.indexOf("/card1/") != -1 ) 
+	    { 
 		    nv_log("Working on secondary card");
 		    return 2;
 	    }
