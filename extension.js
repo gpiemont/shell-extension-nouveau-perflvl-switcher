@@ -208,23 +208,23 @@ function changePerflvl(n,file)
 {
     if (CheckForNVFile(file))
     {
-	    let pid;
-
+    	
 	    nv_log("Switching to performance level: " + n);
 	    
 	    // Full command line (elevates privileges with polkit):
 	    // pkexec /bin/sh -c "/bin/echo n > /sys/class/drm/cardX/performance_level"
 	    
-	    let [ret, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
 	    
-	    if (ret) 
-            {
-	    	try {
-			[ret, pid] = GLib.spawn_async_with_pipes(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, 
-					null, null);
-	    	} catch (e) {
+	    //let [ret, argv] = GLib.shell_parse_argv(_("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\""));	
+	    
+	    let cmdline = _("pkexec /bin/sh -c " + "\"" + " echo " + n + " > " + file + "\"")
+	    
+	    try {
+			Util.Spawn([cmdline]);
+			ret = n;
+	    } catch (e) {
 	    		nv_err("Couldn't change perflvl as superuser : error = " e.toString());
-	    	}
+	    		ret = -1;
 	    }
 
 	    return ret;
