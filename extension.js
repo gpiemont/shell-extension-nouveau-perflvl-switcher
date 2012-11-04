@@ -51,6 +51,8 @@ function ProfileManager(metadata)
 {
     // Main sysfs files (card 0,1)
 
+    this.meta = metadata;
+
     this.file = [] ;
     this.file[0] = "/sys/class/drm/card0/device/performance_level" ;
     this.file[1] = "/sys/class/drm/card1/device/performance_level" ;
@@ -183,9 +185,8 @@ ProfileManager.prototype =
 
         enable: function()
         {
-            Main.panel._rightBox.insert_child_at_index(this.actor, 0);
-            Main.panel._menus.addMenu(this.menu);
-
+	    Main.panel.addToStatusArea('perfswitch', this);
+	    
             // Refresh menu
             let fileM = Gio.file_new_for_path(this.file[this.cardno]);
             this.monitor = fileM.monitor(Gio.FileMonitorFlags.NONE, null);
@@ -194,9 +195,8 @@ ProfileManager.prototype =
 
         disable: function()
         {
-	    Main.panel._rightBox.remove_child(this.actor); 
-            //Main.panel._menus.removeMenu(this.menu);
             this.monitor.cancel();
+	    this.destroy();
         }
 
 }
